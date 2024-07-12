@@ -7,14 +7,14 @@ import Pagination from '../Pagination'
 
 import './index.css'
 
-class Popular extends React.Component {
+class TopRated extends React.Component {
   state = {
     isLoading: true,
-    popularMovieResponse: {},
+    topRatedMovieResponse: {},
   }
 
   componentDidMount() {
-    this.getPopularMoviesResponse()
+    this.getTopRatedMoviesResponse()
   }
 
   getUpdatedData = responseData => ({
@@ -28,13 +28,13 @@ class Popular extends React.Component {
     })),
   })
 
-  getPopularMoviesResponse = async (page = 1) => {
+  getTopRatedMoviesResponse = async (page = 1) => {
     const API_KEY = 'f32b79895b21468afbdd6d5342cbf3da'
-    const apiUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`
+    const apiUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`
     const response = await fetch(apiUrl)
     const data = await response.json()
     const newData = this.getUpdatedData(data)
-    this.setState({isLoading: false, popularMovieResponse: newData})
+    this.setState({isLoading: false, topRatedMovieResponse: newData})
   }
 
   renderLoadingView = () => (
@@ -44,8 +44,8 @@ class Popular extends React.Component {
   )
 
   renderPopularMoviesList = () => {
-    const {popularMovieResponse} = this.state
-    const {results} = popularMovieResponse
+    const {topRatedMovieResponse} = this.state
+    const {results} = topRatedMovieResponse
 
     return (
       <ul className="row p-0 ms-0 me-0 mt-3">
@@ -57,10 +57,11 @@ class Popular extends React.Component {
   }
 
   render() {
-    const {isLoading, popularMovieResponse} = this.state
+    const {isLoading, topRatedMovieResponse} = this.state
 
     return (
       <>
+        {' '}
         <NavBar />
         <div className="route-page-body">
           {isLoading
@@ -68,12 +69,12 @@ class Popular extends React.Component {
             : this.renderPopularMoviesList()}
         </div>
         <Pagination
-          totalPages={popularMovieResponse.totalPages}
-          apiCallback={this.getPopularMoviesResponse}
+          totalPages={topRatedMovieResponse.totalPages}
+          apiCallback={this.getTopRatedMoviesResponse}
         />
       </>
     )
   }
 }
 
-export default Popular
+export default TopRated
